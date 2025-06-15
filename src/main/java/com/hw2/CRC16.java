@@ -38,11 +38,14 @@ public class CRC16 {
     };
 
     public static int calculate(byte[] data) {
-        int crc = 0xFFFF;
-        for (byte b : data) {
-            int temp = (crc ^ b) & 0xFF;
-            crc = (crc >>> 8) ^ TABLE[temp];
+        return calculate(data, 0, data.length);
+    }
+
+    public static int calculate(byte[] data, int offset, int length) {
+        int crc = 0x0000;
+        for (int i = offset; i < offset + length; i++) {
+            crc = (crc >>> 8) ^ TABLE[(crc ^ data[i]) & 0xFF];
         }
-        return crc;
+        return crc & 0xFFFF;
     }
 }

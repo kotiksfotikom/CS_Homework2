@@ -3,7 +3,8 @@ package com.hw2;
 import java.io.*;
 import java.net.*;
 
-public class StoreClientUDP {
+public class StoreClientUDP
+{
     private String serverHost = "localhost";
     private int serverPort = 9877;
     private DatagramSocket socket;
@@ -11,20 +12,25 @@ public class StoreClientUDP {
     private int maxRetries = 3;
     private int timeout = 2000; // 2 seconds
 
-    public StoreClientUDP() {
-        try {
+    public StoreClientUDP()
+    {
+        try
+        {
             socket = new DatagramSocket();
             socket.setSoTimeout(timeout);
             serverAddress = InetAddress.getByName(serverHost);
             System.out.println("UDP Client created");
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             System.out.println("Error creating UDP client: " + e.getMessage());
         }
     }
 
     public boolean sendMessage(String messageText) {
-        for (int attempt = 1; attempt <= maxRetries; attempt++) {
-            try {
+        for (int attempt = 1; attempt <= maxRetries; attempt++)
+        {
+            try
+            {
                 System.out.println("Sending message (attempt " + attempt + "): " + messageText);
 
                 Message message = new Message(messageText);
@@ -45,15 +51,19 @@ public class StoreClientUDP {
                 System.out.println("Received ACK: " + ackMessage.getContent());
                 return true;
 
-            } catch (SocketTimeoutException e) {
+            } catch (SocketTimeoutException e)
+            {
                 System.out.println("Timeout on attempt " + attempt + ", retrying...");
-                if (attempt == maxRetries) {
+                if (attempt == maxRetries)
+                {
                     System.out.println("Failed to send message after " + maxRetries + " attempts");
                     return false;
                 }
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 System.out.println("Error on attempt " + attempt + ": " + e.getMessage());
-                if (attempt == maxRetries) {
+                if (attempt == maxRetries)
+                {
                     System.out.println("Failed to send message: " + e.getMessage());
                     return false;
                 }
@@ -62,14 +72,16 @@ public class StoreClientUDP {
         return false;
     }
 
-    public void close() {
-        if (socket != null && !socket.isClosed()) {
+    public void close()
+    {
+        if (socket != null && !socket.isClosed())
+        {
             socket.close();
             System.out.println("UDP Client closed");
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         StoreClientUDP client = new StoreClientUDP();
 
         client.sendMessage("Hello from UDP client!");

@@ -3,17 +3,21 @@ package com.hw2;
 import java.io.*;
 import java.net.*;
 
-public class StoreServerUDP {
+public class StoreServerUDP
+{
     private int port = 9877;
     private DatagramSocket socket;
     private byte[] buffer = new byte[4096];
 
-    public void startServer() {
-        try {
+    public void startServer()
+    {
+        try
+        {
             socket = new DatagramSocket(port);
             System.out.println("UDP Server started on port " + port);
 
-            while (true) {
+            while (true)
+            {
                 DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                 socket.receive(packet);
 
@@ -26,18 +30,20 @@ public class StoreServerUDP {
         }
     }
 
-    class PacketHandler implements Runnable {
+    class PacketHandler implements Runnable
+    {
         private DatagramPacket receivedPacket;
 
-        public PacketHandler(DatagramPacket packet) {
-            // Copy packet data
+        public PacketHandler(DatagramPacket packet)
+        {
             byte[] data = new byte[packet.getLength()];
             System.arraycopy(packet.getData(), 0, data, 0, packet.getLength());
             this.receivedPacket = new DatagramPacket(data, data.length,
                     packet.getAddress(), packet.getPort());
         }
 
-        public void run() {
+        public void run()
+        {
             try {
                 byte[] data = new byte[receivedPacket.getLength()];
                 System.arraycopy(receivedPacket.getData(), 0, data, 0, receivedPacket.getLength());
@@ -63,7 +69,8 @@ public class StoreServerUDP {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         StoreServerUDP server = new StoreServerUDP();
         server.startServer();
     }
